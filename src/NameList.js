@@ -7,6 +7,7 @@ export function NameList({ names }) {
   const [nameList, setNameList] = useState(names);
   const [count, setCount] = useState(0);
   const [inputError, setInputError] = useState(false);
+  const [filterText, setFilterText] = useState("");
 
   console.log(nameInput);
   console.log(nameList);
@@ -39,6 +40,12 @@ export function NameList({ names }) {
     setNameList([]);
     setCount(0);
   }
+  function handleFilterChange(event) {
+    setFilterText(event.target.value);
+  }
+  const filteredNames = nameList.filter((name) =>
+    name.toLowerCase().includes(filterText.toLowerCase())
+  );
 
   return (
     <div className="container">
@@ -52,18 +59,30 @@ export function NameList({ names }) {
           placeholder="Write Here (Max 30 Char)"
           className="name-input"
         />
+
+        <input
+          type="text"
+          value={filterText}
+          onChange={handleFilterChange}
+          placeholder="Filter Names"
+          className="name-input"
+        />
+
         {inputError && <p className="error">more than 30 char not allowed!</p>}
         <button type="submit" className="add-button">
           Add
         </button>
       </form>
+
       <button onClick={DeleteAll} className="delete-all-button">
         Delete All
       </button>
 
-      {nameList.length > 0 ? (
+      {nameList.length === 0 ? (
+        <p className="no-names-message">NO DATA</p>
+      ) : filteredNames.length > 0 ? (
         <ul className="name-list">
-          {nameList.map((name, index) => {
+          {filteredNames.map((name, index) => {
             console.log(name);
             return (
               <div key={index} className="name-item">
@@ -79,7 +98,7 @@ export function NameList({ names }) {
           })}
         </ul>
       ) : (
-        <p className="no-names-message">NO DATA</p>
+        <p className="no-names-message">NO MATCHING NAMES FOUND</p>
       )}
     </div>
   );
