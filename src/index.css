@@ -91,6 +91,7 @@ button.delete-all-button:hover {
 
 button.delete-button {
   color: #f44336;
+  border: 1px solid black;
   background-color: transparent;
   transition: color 0.3s ease;
 }
