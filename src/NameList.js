@@ -32,23 +32,32 @@ export function NameList({ names }) {
       setInputError(false);
     }
   }
+
   function handleDelete(index) {
-    setNameList(nameList.filter((_, i) => i !== index));
-    setCount(count - 1);
+    const filteredNames = nameList.filter((name) =>
+      name.toLowerCase().includes(filterText.toLowerCase())
+    );
+    if (filteredNames.length > 0) {
+      const updatedNames = [...nameList];
+      const originalIndex = nameList.indexOf(filteredNames[index]);
+      updatedNames.splice(originalIndex, 1);
+      setNameList(updatedNames);
+      setCount(count - 1);
+    }
   }
+
   function DeleteAll() {
     setNameList([]);
     setCount(0);
   }
+
   function handleFilterChange(event) {
     setFilterText(event.target.value);
   }
-  // const filteredNames = nameList.filter((name) =>
-  //   name.toLowerCase().includes(filterText.toLowerCase())
-  // );
-  const filteredNames = nameList.filter((name) => {
-    return name.toLowerCase().includes(filterText.toLowerCase());
-  });
+
+  const filteredNames = nameList.filter((name) =>
+    name.toLowerCase().includes(filterText.toLowerCase())
+  );
 
   return (
     <div className="container">
@@ -81,9 +90,11 @@ export function NameList({ names }) {
         Delete All
       </button>
 
-      {nameList.length === 0 ? (
-        <p className="no-names-message">NO DATA</p>
-      ) : filteredNames.length > 0 ? (
+      {filteredNames.length === 0 ? (
+        <p className="no-names-message">
+          {nameList.length === 0 ? "NO DATA" : "NO MATCHING NAMES FOUND"}
+        </p>
+      ) : (
         <ul className="name-list">
           {filteredNames.map((name, index) => {
             console.log(name);
@@ -100,8 +111,6 @@ export function NameList({ names }) {
             );
           })}
         </ul>
-      ) : (
-        <p className="no-names-message">NO MATCHING NAMES FOUND</p>
       )}
     </div>
   );
