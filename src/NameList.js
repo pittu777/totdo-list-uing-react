@@ -43,9 +43,12 @@ export function NameList({ names }) {
   function handleFilterChange(event) {
     setFilterText(event.target.value);
   }
-  const filteredNames = nameList.filter((name) =>
-    name.toLowerCase().includes(filterText.toLowerCase())
-  );
+  // const filteredNames = nameList.filter((name) =>
+  //   name.toLowerCase().includes(filterText.toLowerCase())
+  // );
+  const filteredNames = nameList.filter((name) => {
+    return name.toLowerCase().includes(filterText.toLowerCase());
+  });
 
   return (
     <div className="container">
@@ -64,7 +67,7 @@ export function NameList({ names }) {
           type="text"
           value={filterText}
           onChange={handleFilterChange}
-          placeholder="Filter Names"
+          placeholder="Search names (Filter Names)"
           className="name-input"
         />
 
