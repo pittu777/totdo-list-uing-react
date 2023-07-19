@@ -72,6 +72,9 @@ button.add-button:hover {
   background-color: #4caf50;
   color: #fff;
 }
+.error{
+  color: red;
+}
 
 button.delete-all-button {
   background-color: #f44336;

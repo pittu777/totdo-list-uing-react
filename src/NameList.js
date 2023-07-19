@@ -6,6 +6,7 @@ export function NameList({ names }) {
   const [nameInput, setNameInput] = useState("");
   const [nameList, setNameList] = useState(names);
   const [count, setCount] = useState(0);
+  const [inputError, setInputError] = useState(false);
 
   console.log(nameInput);
   console.log(nameList);
@@ -15,6 +16,9 @@ export function NameList({ names }) {
     const inputValue = event.target.value;
     if (inputValue.length <= 30) {
       setNameInput(inputValue);
+      setInputError(false);
+    } else {
+      setInputError(true);
     }
   }
 
@@ -24,6 +28,7 @@ export function NameList({ names }) {
       setNameList([...nameList, nameInput]);
       setNameInput("");
       setCount(count + 1);
+      setInputError(false);
     }
   }
   function handleDelete(index) {
@@ -37,7 +42,7 @@ export function NameList({ names }) {
 
   return (
     <div className="container">
-      <h2 className="total-names">Total Names: {count}</h2>
+      <h4 className="total-names">Total Names: {count}</h4>
 
       <form onSubmit={handleSubmit}>
         <input
@@ -47,34 +52,35 @@ export function NameList({ names }) {
           placeholder="Write Here (Max 30 Char)"
           className="name-input"
         />
+        {inputError && <p className="error">more than 30 char not allowed!</p>}
         <button type="submit" className="add-button">
           Add
         </button>
-        <button onClick={DeleteAll} className="delete-all-button">
-          Delete All
-        </button>
-
-        {nameList.length > 0 ? (
-          <ul className="name-list">
-            {nameList.map((name, index) => {
-              console.log(name);
-              return (
-                <div key={index} className="name-item">
-                  <li>{name}</li>
-                  <button
-                    className="delete-button"
-                    onClick={() => handleDelete(index)}
-                  >
-                    Delete
-                  </button>
-                </div>
-              );
-            })}
-          </ul>
-        ) : (
-          <p className="no-names-message">NO DATA</p>
-        )}
       </form>
+      <button onClick={DeleteAll} className="delete-all-button">
+        Delete All
+      </button>
+
+      {nameList.length > 0 ? (
+        <ul className="name-list">
+          {nameList.map((name, index) => {
+            console.log(name);
+            return (
+              <div key={index} className="name-item">
+                <li>{name}</li>
+                <button
+                  className="delete-button"
+                  onClick={() => handleDelete(index)}
+                >
+                  Delete
+                </button>
+              </div>
+            );
+          })}
+        </ul>
+      ) : (
+        <p className="no-names-message">NO DATA</p>
+      )}
     </div>
   );
 }
